@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- 焦点指示器边框 - 加粗更明显 -->
+    <stroke
+        android:width="6dp"
+        android:color="#00E5FF" />
+
+    <!-- 实色填充测试 - 改为不透明 -->
+    <solid android:color="#8000E5FF" />
+
+    <!-- 圆角 -->
+    <corners android:radius="12dp" />
+
+</shape>

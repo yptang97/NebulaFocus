@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- FocusIndicatorLayout 自定义属性 -->
+    <declare-styleable name="FocusIndicatorLayout">
+        <!-- 指示器背景资源（支持 9-Patch） -->
+        <attr name="cursorBackground" format="reference" />
+        <!-- 统一 Padding（正值外扩，负值内缩） -->
+        <attr name="cursorPadding" format="dimension" />
+        <!-- 左侧 Padding -->
+        <attr name="cursorPaddingLeft" format="dimension" />
+        <!-- 顶部 Padding -->
+        <attr name="cursorPaddingTop" format="dimension" />
+        <!-- 右侧 Padding -->
+        <attr name="cursorPaddingRight" format="dimension" />
+        <!-- 底部 Padding -->
+        <attr name="cursorPaddingBottom" format="dimension" />
+    </declare-styleable>
+
+    <!-- FocusCursorView 自定义属性 -->
+    <declare-styleable name="FocusCursorView">
+        <!-- 左侧 Padding -->
+        <attr name="cursorPaddingLeft" />
+        <!-- 顶部 Padding -->
+        <attr name="cursorPaddingTop" />
+        <!-- 右侧 Padding -->
+        <attr name="cursorPaddingRight" />
+        <!-- 底部 Padding -->
+        <attr name="cursorPaddingBottom" />
+        <!-- Spring 动画刚度 -->
+        <attr name="cursorSpringStiffness" format="float" />
+        <!-- Spring 动画阻尼比 -->
+        <attr name="cursorSpringDampingRatio" format="float" />
+        <!-- 尺寸动画时长（毫秒） -->
+        <attr name="cursorSizeAnimDuration" format="integer" />
+    </declare-styleable>
+
+</resources>

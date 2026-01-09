@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>NebulaFocus 交互模拟器</title>
+    <style>
+        :root { --accent: #00E5FF; --bg: #1a1a1a; --panel: #2d2d2d; }
+        body { background: var(--bg); color: #eee; font-family: 'Segoe UI', sans-serif; display: flex; gap: 40px; justify-content: center; padding: 40px; height: 100vh; box-sizing: border-box; }
+        
+        /* 电视屏幕容器 */
+        .device-wrapper { position: relative; }
+        .tv-screen {
+            width: 260px; height: 400px;
+            background: #000; border: 10px solid #444; border-radius: 16px;
+            position: relative; overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+        }
+
+        /* 锚点辅助线 */
+        .keyline-guide {
+            position: absolute; left: 0; width: 100%; height: 0;
+            border-top: 2px dashed rgba(255, 50, 50, 0.6);
+            z-index: 20; pointer-events: none;
+            transition: top 0.3s;
+        }
+        .keyline-tag {
+            position: absolute; right: 0; top: -20px;
+            font-size: 10px; color: #ff5555; background: rgba(0,0,0,0.8); padding: 2px 4px;
+        }
+
+        /* 列表层 */
+        .rv-container {
+            position: absolute; top: 0; left: 0; width: 100%;
+            /* 模拟 Android 的平滑滚动动画 */
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .item {
+            height: 60px; margin: 0 10px;
+            display: flex; align-items: center; justify-content: center;
+            border-bottom: 1px solid #333; color: #666; font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        /* 焦点层 (独立层级) */
+        .focus-cursor {
+            position: absolute; left: 10px; width: 240px; height: 60px;
+            border: 3px solid var(--accent); border-radius: 8px;
+            background: rgba(0, 229, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+            pointer-events: none; z-index: 10;
+            /* 模拟 Spring 动画 */
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* 控制面板 */
+        .config-panel { width: 300px; background: var(--panel); padding: 20px; border-radius: 12px; height: fit-content; }
+        h3 { margin-top: 0; color: var(--accent); }
+        .control-group { margin-bottom: 15px; }
+        label { display: block; font-size: 12px; margin-bottom: 5px; color: #aaa; }
+        input[type="range"] { width: 100%; }
+        input[type="number"] { width: 60px; background: #444; border: none; color: white; padding: 5px; border-radius: 4px; }
+        .val-display { float: right; font-weight: bold; color: var(--accent); }
+        
+        .btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+        button {
+            padding: 12px; border: none; border-radius: 6px; cursor: pointer;
+            background: #444; color: white; font-weight: bold; transition: 0.2s;
+        }
+        button.primary { background: var(--accent); color: #000; }
+        button:active { transform: scale(0.96); }
+
+        .status-log { margin-top: 20px; font-family: monospace; font-size: 12px; color: #888; border-top: 1px solid #444; padding-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <!-- 模拟器界面 -->
+    <div class="device-wrapper">
+        <div class="tv-screen">
+            <!-- 锚点线 -->
+            <div class="keyline-guide" id="guideLine">
+                <div class="keyline-tag">KEYLINE (锚点)</div>
+            </div>
+
+            <!-- 列表内容 -->
+            <div class="rv-container" id="rvList">
+                <!-- JS 动态生成 -->
+            </div>
+
+            <!-- 焦点指示器 -->
+            <div class="focus-cursor" id="cursor"></div>
+        </div>
+    </div>
+
+    <!-- 配置面板 -->
+    <div class="config-panel">
+        <h3>配置参数 (Config)</h3>
+        
+        <div class="control-group">
+            <label>Item 总数 <span class="val-display" id="valTotal">15</span></label>
+            <input type="range" min="5" max="50" value="15" id="inTotal">
+        </div>
+
+        <div class="control-group">
+            <label>锚点位置 (屏幕百分比) <span class="val-display" id="valOffset">35%</span></label>
+            <input type="range" min="0" max="100" value="35" id="inOffset">
+            <div style="font-size:10px; color:#666; margin-top:4px;">
+                0%=贴顶 (方案1/2) | 35%=黄金分割 | 50%=居中
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label>当前焦点 Index: <span class="val-display" id="valIndex">0</span></label>
+        </div>
+
+        <div class="btn-grid">
+            <button onclick="move(-1)">▲ 上移</button>
+            <button class="primary" onclick="move(1)">▼ 下移</button>
+            <button onclick="reset()" style="grid-column: span 2">⟲ 重置</button>
+        </div>
+
+        <div class="status-log" id="log">Ready.</div>
+    </div>
+
+<script>
+    // === 常量与状态 ===
+    const ITEM_HEIGHT = 60;
+    const SCREEN_HEIGHT = 400;
+    
+    let state = {
+        totalItems: 15,
+        keylinePercent: 0.35, // 0.0 ~ 1.0
+        focusIndex: 0,
+        scrollInfo: 0 // 当前列表向上滚动的像素值
+    };
+
+    // === 初始化 ===
+    const ui = {
+        list: document.getElementById('rvList'),
+        cursor: document.getElementById('cursor'),
+        guide: document.getElementById('guideLine'),
+        log: document.getElementById('log'),
+        inTotal: document.getElementById('inTotal'),
+        inOffset: document.getElementById('inOffset')
+    };
+
+    function init() {
+        renderList();
+        updateKeylineVisual();
+        updateSystem();
+        
+        // 绑定输入事件
+        ui.inTotal.oninput = (e) => { 
+            state.totalItems = parseInt(e.target.value); 
+            document.getElementById('valTotal').innerText = state.totalItems;
+            renderList(); 
+            reset();
+        };
+        ui.inOffset.oninput = (e) => {
+            state.keylinePercent = parseInt(e.target.value) / 100;
+            document.getElementById('valOffset').innerText = e.target.value + "%";
+            updateKeylineVisual();
+            updateSystem(); // 实时重新计算位置
+        };
+    }
+
+    function renderList() {
+        let html = '';
+        for(let i=0; i<state.totalItems; i++) {
+            html += `<div class="item" style="background:${i%2===0?'rgba(255,255,255,0.03)':'transparent'}">Item ${i}</div>`;
+        }
+        ui.list.innerHTML = html;
+        // 容器高度设为内容总高，方便计算
+        ui.list.style.height = (state.totalItems * ITEM_HEIGHT) + "px";
+    }
+
+    function updateKeylineVisual() {
+        const px = SCREEN_HEIGHT * state.keylinePercent;
+        ui.guide.style.top = px + "px";
+    }
+
+    function reset() {
+        state.focusIndex = 0;
+        state.scrollInfo = 0;
+        updateSystem();
+    }
+
+    // === 核心交互逻辑 (The "Unified" Algorithm) ===
+    function move(dir) {
+        const next = state.focusIndex + dir;
+        if(next < 0 || next >= state.totalItems) return;
+        state.focusIndex = next;
+        updateSystem();
+    }
+
+    function updateSystem() {
+        // 1. 目标 Item 在列表中的绝对 Y 坐标
+        const targetItemY = state.focusIndex * ITEM_HEIGHT;
+        
+        // 2. 锚点在屏幕上的绝对 Y 坐标
+        const keylineScreenY = SCREEN_HEIGHT * state.keylinePercent;
+
+        // 3. 计算理想的 Scroll 值
+        // 公式：为了让 Item 的顶部(或中心) 对齐锚点，列表需要上移多少？
+        // Scroll = Item绝对Y - 屏幕锚点Y
+        let idealScroll = targetItemY - keylineScreenY;
+
+        // 修正：居中对齐时，通常希望是 Item 中心对齐锚点
+        // 这里简单处理为 Item 顶部对齐锚点
+        // 如果要中心对齐：idealScroll = (targetItemY + ITEM_HEIGHT/2) - keylineScreenY;
+
+        // 4. 边界限制 (Clamping)
+        // 列表最小滚动为 0 (顶部)
+        // 列表最大滚动为 (TotalHeight - ScreenHeight) (底部)
+        const maxScroll = (state.totalItems * ITEM_HEIGHT) - SCREEN_HEIGHT;
+        
+        // 实际应用 Scroll
+        let finalScroll = Math.max(0, Math.min(idealScroll, maxScroll));
+        state.scrollInfo = finalScroll;
+
+        // 5. 计算指示器在屏幕上的位置
+        // IndicatorScreenY = Item绝对Y - 列表滚动量
+        let cursorScreenY = targetItemY - finalScroll;
+
+        // === 应用渲染 ===
+        ui.list.style.transform = `translateY(-${finalScroll}px)`;
+        ui.cursor.style.transform = `translateY(${cursorScreenY}px)`;
+        
+        // 更新日志
+        document.getElementById('valIndex').innerText = state.focusIndex;
+        let statusText = "";
+        if (finalScroll <= 0) statusText = "头部自由移动";
+        else if (finalScroll >= maxScroll) statusText = "尾部自由移动";
+        else statusText = "锚点锁定滚动 (Keyline Locked)";
+        
+        ui.log.innerHTML = `State: ${statusText}<br>Idx: ${state.focusIndex} | Scroll: ${parseInt(finalScroll)}px | CursorY: ${parseInt(cursorScreenY)}px`;
+    }
+
+    // Start
+    init();
+
+</script>
+</body>
+</html>

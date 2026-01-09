@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FocusCursorView">
+        
+        <attr name="cursorPaddingLeft"/>
+        
+        <attr name="cursorPaddingTop"/>
+        
+        <attr name="cursorPaddingRight"/>
+        
+        <attr name="cursorPaddingBottom"/>
+        
+        <attr format="float" name="cursorSpringStiffness"/>
+        
+        <attr format="float" name="cursorSpringDampingRatio"/>
+        
+        <attr format="integer" name="cursorSizeAnimDuration"/>
+    </declare-styleable>
+    <declare-styleable name="FocusIndicatorLayout">
+        
+        <attr format="reference" name="cursorBackground"/>
+        
+        <attr format="dimension" name="cursorPadding"/>
+        
+        <attr format="dimension" name="cursorPaddingLeft"/>
+        
+        <attr format="dimension" name="cursorPaddingTop"/>
+        
+        <attr format="dimension" name="cursorPaddingRight"/>
+        
+        <attr format="dimension" name="cursorPaddingBottom"/>
+    </declare-styleable>
+</resources>

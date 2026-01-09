@@ -1,0 +1,12 @@
+com.vinper.nebulafocus
+attr cursorBackground
+attr cursorPadding
+attr cursorPaddingBottom
+attr cursorPaddingLeft
+attr cursorPaddingRight
+attr cursorPaddingTop
+attr cursorSizeAnimDuration
+attr cursorSpringDampingRatio
+attr cursorSpringStiffness
+styleable FocusCursorView cursorPaddingBottom cursorPaddingLeft cursorPaddingRight cursorPaddingTop cursorSizeAnimDuration cursorSpringDampingRatio cursorSpringStiffness
+styleable FocusIndicatorLayout cursorBackground cursorPadding cursorPaddingBottom cursorPaddingLeft cursorPaddingRight cursorPaddingTop

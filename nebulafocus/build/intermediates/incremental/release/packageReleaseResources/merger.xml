@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="E:\NebulaFocus\nebulafocus\src\main\res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="main" generated-set="main$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~:!&lt;dir>navigation"><source path="E:\NebulaFocus\nebulafocus\src\main\res"><file path="E:\NebulaFocus\nebulafocus\src\main\res\values\attrs.xml" qualifiers=""><declare-styleable name="FocusIndicatorLayout">
+        
+        <attr format="reference" name="cursorBackground"/>
+        
+        <attr format="dimension" name="cursorPadding"/>
+        
+        <attr format="dimension" name="cursorPaddingLeft"/>
+        
+        <attr format="dimension" name="cursorPaddingTop"/>
+        
+        <attr format="dimension" name="cursorPaddingRight"/>
+        
+        <attr format="dimension" name="cursorPaddingBottom"/>
+    </declare-styleable><declare-styleable name="FocusCursorView">
+        
+        <attr name="cursorPaddingLeft"/>
+        
+        <attr name="cursorPaddingTop"/>
+        
+        <attr name="cursorPaddingRight"/>
+        
+        <attr name="cursorPaddingBottom"/>
+        
+        <attr format="float" name="cursorSpringStiffness"/>
+        
+        <attr format="float" name="cursorSpringDampingRatio"/>
+        
+        <attr format="integer" name="cursorSizeAnimDuration"/>
+    </declare-styleable></file></source></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="release$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="E:\NebulaFocus\nebulafocus\src\release\res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="release" generated-set="release$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~:!&lt;dir>navigation"><source path="E:\NebulaFocus\nebulafocus\src\release\res"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated$Generated" generated="true" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~"><source path="E:\NebulaFocus\nebulafocus\build\generated\res\resValues\release"/></dataSet><dataSet aapt-namespace="http://schemas.android.com/apk/res-auto" config="generated" generated-set="generated$Generated" ignore_pattern="!.svn:!.git:!.ds_store:!*.scc:.*:&lt;dir>_*:!CVS:!thumbs.db:!picasa.ini:!*~:!&lt;dir>navigation"><source path="E:\NebulaFocus\nebulafocus\build\generated\res\resValues\release"/></dataSet><mergedItems><configuration qualifiers=""><declare-styleable name="FocusIndicatorLayout">
+        
+        <attr format="reference" name="cursorBackground"/>
+        
+        <attr format="dimension" name="cursorPadding"/>
+        
+        <attr format="dimension" name="cursorPaddingLeft"/>
+        
+        <attr format="dimension" name="cursorPaddingTop"/>
+        
+        <attr format="dimension" name="cursorPaddingRight"/>
+        
+        <attr format="dimension" name="cursorPaddingBottom"/>
+    </declare-styleable><declare-styleable name="FocusCursorView">
+        
+        <attr name="cursorPaddingLeft"/>
+        
+        <attr name="cursorPaddingTop"/>
+        
+        <attr name="cursorPaddingRight"/>
+        
+        <attr name="cursorPaddingBottom"/>
+        
+        <attr format="float" name="cursorSpringStiffness"/>
+        
+        <attr format="float" name="cursorSpringDampingRatio"/>
+        
+        <attr format="integer" name="cursorSizeAnimDuration"/>
+    </declare-styleable></configuration></mergedItems></merger>

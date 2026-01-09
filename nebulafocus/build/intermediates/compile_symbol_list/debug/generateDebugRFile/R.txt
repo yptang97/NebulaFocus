@@ -1,0 +1,24 @@
+int attr cursorBackground 0x0
+int attr cursorPadding 0x0
+int attr cursorPaddingBottom 0x0
+int attr cursorPaddingLeft 0x0
+int attr cursorPaddingRight 0x0
+int attr cursorPaddingTop 0x0
+int attr cursorSizeAnimDuration 0x0
+int attr cursorSpringDampingRatio 0x0
+int attr cursorSpringStiffness 0x0
+int[] styleable FocusCursorView { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
+int styleable FocusCursorView_cursorPaddingBottom 0
+int styleable FocusCursorView_cursorPaddingLeft 1
+int styleable FocusCursorView_cursorPaddingRight 2
+int styleable FocusCursorView_cursorPaddingTop 3
+int styleable FocusCursorView_cursorSizeAnimDuration 4
+int styleable FocusCursorView_cursorSpringDampingRatio 5
+int styleable FocusCursorView_cursorSpringStiffness 6
+int[] styleable FocusIndicatorLayout { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 }
+int styleable FocusIndicatorLayout_cursorBackground 0
+int styleable FocusIndicatorLayout_cursorPadding 1
+int styleable FocusIndicatorLayout_cursorPaddingBottom 2
+int styleable FocusIndicatorLayout_cursorPaddingLeft 3
+int styleable FocusIndicatorLayout_cursorPaddingRight 4
+int styleable FocusIndicatorLayout_cursorPaddingTop 5

@@ -13,3 +13,14 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Build directories
+**/build/
+*.apk
+*.ap_
+*.dex
+*.class
+
+# IDE files
+.idea/deploymentTargetSelector.xml
+.idea/compiler.xml

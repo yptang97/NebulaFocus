@@ -1,0 +1,13 @@
+R_DEF: Internal format may change without notice
+local
+attr? cursorBackground
+attr? cursorPadding
+attr? cursorPaddingBottom
+attr? cursorPaddingLeft
+attr? cursorPaddingRight
+attr? cursorPaddingTop
+attr? cursorSizeAnimDuration
+attr? cursorSpringDampingRatio
+attr? cursorSpringStiffness
+styleable FocusCursorView cursorPaddingLeft cursorPaddingTop cursorPaddingRight cursorPaddingBottom cursorSpringStiffness cursorSpringDampingRatio cursorSizeAnimDuration
+styleable FocusIndicatorLayout cursorBackground cursorPadding cursorPaddingLeft cursorPaddingTop cursorPaddingRight cursorPaddingBottom
