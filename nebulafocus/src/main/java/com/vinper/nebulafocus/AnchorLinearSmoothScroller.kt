@@ -164,6 +164,51 @@ class AnchorLinearLayoutManager @JvmOverloads constructor(
         }
         startSmoothScroll(scroller)
     }
+
+    /**
+     * 重写此方法以支持 D-Pad 导航时的锚点滚动
+     * 当焦点移动到屏幕外的 Item 时，RecyclerView 会调用此方法
+     */
+    override fun requestChildRectangleOnScreen(
+        parent: RecyclerView,
+        child: View,
+        rect: android.graphics.Rect,
+        immediate: Boolean,
+        focusedChildVisible: Boolean
+    ): Boolean {
+        if (!isAnchorScrollEnabled) {
+            return super.requestChildRectangleOnScreen(parent, child, rect, immediate, focusedChildVisible)
+        }
+
+        // 计算锚点位置
+        val containerHeight = parent.height - parent.paddingTop - parent.paddingBottom
+        val keylineY = (containerHeight * keylinePercent).toInt()
+
+        // 获取 child 在 RecyclerView 中的位置
+        val childTop = child.top - parent.paddingTop
+        val childBottom = child.bottom - parent.paddingTop
+
+        // 计算需要滚动的距离
+        val scrollDistance = when {
+            // Child 在锚点上方，需要向下滚动（负值）
+            childBottom < keylineY -> childTop - keylineY
+            // Child 在锚点下方，需要向上滚动（正值）
+            childTop > keylineY -> childTop - keylineY
+            // Child 已经在锚点位置附近，不需要滚动
+            else -> 0
+        }
+
+        if (scrollDistance != 0) {
+            if (immediate) {
+                parent.scrollBy(0, scrollDistance)
+            } else {
+                parent.smoothScrollBy(0, scrollDistance)
+            }
+            return true
+        }
+
+        return false
+    }
 }
 
 /**
